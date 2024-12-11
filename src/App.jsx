@@ -1,31 +1,40 @@
+import React from "react";
+
 const App = () => {
-  return <Tick date={new Date()} />;
+  return <Tick />;
 };
 
-const Tick = ({ date }) => {
-  return (
-    <div>
-      <h1>Hello! World</h1>
-      <h1>It is {date.toLocaleTimeString()}</h1>
-    </div>
-  );
-};
+class Tick extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { date: new Date() };
+  }
 
-setInterval(App, 1000);
+  componentDidMount() {
+    this.timerId = setInterval(() => {
+      // console.log("Updating the state");
+      this.updateTime();
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId);
+  }
+
+  updateTime() {
+    this.setState({
+      date: new Date(),
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h1>It is {this.state.date.toLocaleTimeString()}.</h1>
+      </div>
+    );
+  }
+}
 
 export default App;
-
-// function Clock(props) {
-//   return (
-//     <div>
-//       <h1>Hello, world!</h1>
-//       <h2>It is {props.date.toLocaleTimeString()}.</h2>
-//     </div>
-//   );
-// }
-
-// function tick() {
-//   root.render(<Clock date={new Date()} />);
-// }
-
-// setInterval(tick, 1000);
